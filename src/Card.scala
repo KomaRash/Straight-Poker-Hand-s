@@ -1,5 +1,5 @@
-import CardCharacteristic.{Dignity, Suit}
+import CardCharacteristic.Suit
 
 case class Card(dignity: Dignity, suit: Suit) {
-  val getlowerDignity:Dignity=dignity-1
+  val getlowerDignity: Dignity = dignity.getPrevDignity
 }
