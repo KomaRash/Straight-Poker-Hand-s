@@ -1,9 +1,13 @@
-import CardCharacteristic.Dignity
+package Combinations
+
+import Combinations.CardCharacteristic.{Card, Dignity}
 
 sealed abstract  class  PossibleLinearCombination(highCard: Card, lowCard:Card, length:Int) extends Combination{
   override def powerCombination: Int = -1
   val lowerCardDignity: Dignity =lowCard.getlowerDignity
   override def |(combination: Combination): Combination = combination
+
+  override def getCombinationList: List[Combination] = List()
 }
 
 case class PossibleStraight( highCard: Card, lowCard:Card,length:Int) extends
