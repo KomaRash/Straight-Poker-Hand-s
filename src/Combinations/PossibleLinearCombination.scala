@@ -1,15 +1,28 @@
 package Combinations
 
-import Combinations.CardCharacteristic.{Card, Dignity}
+import Combinations.CardCharacteristic.{Card, Rank}
 
+
+/**
+ * class represent not full line combination
+ * @param highCard - card with high rank in combination
+ * @param lowCard - card with low rank in combination
+ * @param length - length not full combination
+ */
 sealed abstract  class  PossibleLinearCombination(highCard: Card, lowCard:Card, length:Int) extends Combination{
   override def powerCombination: Int = -1
-  val lowerCardDignity: Dignity =lowCard.getlowerDignity
-  override def |(combination: Combination): Combination = combination
+  val lowerCardDignity: Rank =lowCard.getLowerRank
+  override def combine(combination: Combination): Combination = combination
 
   override def getCombinationList: List[Combination] = List()
 }
 
+/**
+ * class represent not full Straight
+ * @param highCard - card with high rank in combination
+ * @param lowCard - card with low rank in combination
+ * @param length - length not full combination
+ */
 case class PossibleStraight( highCard: Card, lowCard:Card,length:Int) extends
   PossibleLinearCombination(highCard: Card, lowCard:Card, length:Int){
 
@@ -22,6 +35,12 @@ case class PossibleStraight( highCard: Card, lowCard:Card,length:Int) extends
   }
 }
 
+/**
+ *  class represent not full Flush
+ * @param highCard - card with high rank in combination
+ * @param lowCard - card with low rank in combination
+ * @param length - length not full combination
+ */
 case class PossibleFlush( highCard: Card, lowCard:Card,length:Int) extends
   PossibleLinearCombination(highCard: Card, lowCard:Card, length:Int){
 
@@ -32,15 +51,21 @@ case class PossibleFlush( highCard: Card, lowCard:Card,length:Int) extends
   }
 }
 
+/**
+ *  class represent not full Straight Flush
+ * @param highCard - card with high rank in combination
+ * @param lowCard - card with low rank in combination
+ * @param length - length not full combination
+ */
 case class PossibleStraightFlush( highCard: Card, lowCard:Card,length:Int) extends
   PossibleLinearCombination(highCard: Card, lowCard:Card, length:Int)   {
   override def combine(card: Card): Combination = {
     card match {
-      case Card(this.lowerCardDignity, lowCard.suit) if (this.length < 4) => Comb(this, PossibleStraightFlush(highCard, card, length + 1))
+      case Card(this.lowerCardDignity, lowCard.suit) if (this.length < 4) => Node(this, PossibleStraightFlush(highCard, card, length + 1))
       case Card(this.lowerCardDignity,lowCard.suit) if (this.length == 4) => StraightFlush (highCard)
-      case Card(this.lowerCardDignity, _) if (this.length < 4) => Comb(this, PossibleStraight(highCard, card, length + 1))
+      case Card(this.lowerCardDignity, _) if (this.length < 4) => Node(this, PossibleStraight(highCard, card, length + 1))
       case Card(this.lowerCardDignity, _) if (this.length == 4) => Straight(highCard)
-      case Card(_, highCard.suit)  if (this.length < 4) => Comb(this, PossibleFlush(highCard, card, length + 1))
+      case Card(_, highCard.suit)  if (this.length < 4) => Node(this, PossibleFlush(highCard, card, length + 1))
       case Card(_, highCard.suit) if (this.length == 4) => Flush(highCard)
       case card: Card=>this
 
