@@ -7,6 +7,7 @@ import Combinations.CardCharacteristic.{Card, Rank, Suit}
  * @param highCard - high card in combination
  */
 sealed  class LinearCombination(highCard:Card) extends Combination{
+  override def size: Rank = 5
   override def getHighRank: Rank = highCard.rank
   def getSuit:Suit=highCard.suit
 }

@@ -13,6 +13,11 @@ trait Combination{
   def getHighRank: Rank= ???
 
   /**
+   * number of cards in combination
+   * @return number of cards in combination
+   */
+  def size:Int= ???
+  /**
    * getting power of combination
    * @return value used to identify the strongest combination
    */
@@ -48,6 +53,7 @@ case class FourOfKind(rank:Rank) extends Combination{
   override def powerCombination: Int = 7*10000+getHighRank
   override def getHighRank: Rank=rank
 
+  override def size: Int = 4
 }
 
 /**
@@ -57,6 +63,8 @@ case class FourOfKind(rank:Rank) extends Combination{
  */
 case class FullHouse(threeOfKind: ThreeOfKind,pair: Pair) extends Combination{
   override def powerCombination: Int = 6*10000+threeOfKind.getHighRank*100+pair.getHighRank
+
+  override def size: Rank = 5
 }
 
 /**
@@ -68,6 +76,7 @@ case class FullHouse(threeOfKind: ThreeOfKind,pair: Pair) extends Combination{
 case class ThreeOfKind(firstCard:Card,secondCard:Card,thirdCard:Card) extends Combination{
   override def powerCombination: Int = 3*10000+getHighRank
 
+  override def size: Rank = 3
   /**combines two combinations of cards and
    * if the pair parameter of another rank returns a full house else this combination
    * @param combination second combination of cards for combines
@@ -90,6 +99,7 @@ case class ThreeOfKind(firstCard:Card,secondCard:Card,thirdCard:Card) extends Co
  * @param secondPair - second pair consisting in combination
  */
 case class TwoPairs(firstPair: Pair,secondPair: Pair ) extends Combination{
+  override def size: Rank = 4
   override def powerCombination: Int = 2*10000+ {
     if (firstPair.getHighRank.compareTo(secondPair.getHighRank) equals firstPair.getHighRank)
       firstPair.getHighRank * 100 + secondPair.getHighRank
@@ -110,6 +120,7 @@ case class TwoPairs(firstPair: Pair,secondPair: Pair ) extends Combination{
  * @param secondCard -second card consisting in combination
  */
 case class Pair(firstCard:Card,secondCard:Card) extends Combination{
+  override def size: Rank = 2
   override def powerCombination: Int = 1*10000+firstCard.rank
   override def getHighRank: Rank = firstCard.rank
   override def combine(card: Card): Combination = card match{
@@ -130,6 +141,7 @@ case class Pair(firstCard:Card,secondCard:Card) extends Combination{
  * @param card - high Card
  */
 case class HighCard(card: Card) extends Combination{
+  override def size: Rank = 1
   override def powerCombination: Int = card.rank
 
   val lowerCardRank: Rank = this.card.getLowerRank
@@ -148,6 +160,7 @@ case class HighCard(card: Card) extends Combination{
  *  empty object in Tree
  */
 case object NoCard extends Combination {
+  override def size: Rank = 0
   override def powerCombination: Int = -1
 
   override def combine(card: Card): Combination = card match {

@@ -36,7 +36,7 @@ package object CardCharacteristic
      */
     val getLowerRank: Rank = rank-1
 
-    override def toString: String = s"(${rank match{
+    override def toString: String = s"${rank match{
       case 10=>"T"
       case 11=>"J"
       case 12=>"Q"
@@ -44,6 +44,6 @@ package object CardCharacteristic
       case 14=>"A"
       case rank=>rank
     }
-    },$suit)"
+    }$suit"
   }
 }

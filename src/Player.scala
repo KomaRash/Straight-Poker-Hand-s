@@ -9,5 +9,5 @@ import Combinations.{Combination, NoCard}
 case class Player(firstCard:Card,secondCard:Card){
   def getStartCombination: Combination = NoCard
   def listCard():List[Card]=List(firstCard,secondCard)
-  override def toString: String = s"player with card:$secondCard;$firstCard"
+  override def toString: String = s"($secondCard;$firstCard)"
 }

@@ -1,8 +1,9 @@
 import Combinations.CardCharacteristic._
-import Combinations.{Combination, Flush, HighCard, LinearCombination, StraightFlush}
+import Combinations._
 
 import scala.util.Try
 object Parsing {
+  val pokerCombinationLength=5
   /**
    * implicit value for compare power of player's Cards
    */
@@ -75,12 +76,12 @@ object Parsing {
   }
 
   /**
-   * getting winner Player in game
+   * Range player's include his combinations
    * @param players - list Player's
    * @param table - list card on table in game
-   * @return Player with highest combination
+   * @return sorted Player's list
    */
-  def Winner(players: List[Player],table:List[Card]):Player={
+  def RangePlayers(players: List[Player], table:List[Card]):List[(Player,(List[Combination],Combination))]={
     val combinationOnTable = playerCombination(table)(_)
     val playersHighCombination = players.map {
       player =>
@@ -92,11 +93,10 @@ object Parsing {
             val (suitCard, otherCard) =
               highCards.partition(highCombination.asInstanceOf[LinearCombination].getSuit equals _)
             (suitCard.take(5)) ::: otherCard
-          case _ => highCards
+          case comb:Combination =>highCards
         }).reverse, highCombination))
     }
-    playersHighCombination.max._1
-
+    playersHighCombination
   }
 
 
